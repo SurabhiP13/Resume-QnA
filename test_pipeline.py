@@ -14,7 +14,7 @@ print("Initializing pipeline...")
 pipeline = ResumeRAGPipeline(api_key=OPENAI_API_KEY)
 
 # Test query
-query = "Find candidates with PyTorch and deep learning experience"
+query = "Find candidates with docker and kubernetes experience"
 print(f"\nQuery: {query}")
 print("Searching...\n")
 

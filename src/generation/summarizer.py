@@ -89,7 +89,13 @@ FULL RESUME:
 
 Focus on the relevant sections above, but use the full resume for complete context.
 Provide a concise response.
-Also, if there are any duplicate resumes, make sure to output only one summary per unique resume."""
+Following are some of the rules to follow while generating the summary:
+1. Be objective and focus on the candidate's qualifications.
+2. Avoid personal opinions or subjective statements.
+3. If there are any duplicate resumes, make sure to output only one summary per unique resume.
+4. If the resume lacks relevant information, state that clearly in your summary.
+5. If the resume is not relevant to the query, do not generate a summary and state that there were not enough relevant resumes
+If """
             
             response = self.client.chat.completions.create(
                 model=self.model,

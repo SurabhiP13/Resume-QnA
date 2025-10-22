@@ -49,6 +49,7 @@ data/processed/markdown/Resume-markdown-docling/**/*
 !data/processed/.gitkeep
 !data/processed/chunks/.gitkeep
 !data/processed/embeddings/.gitkeep
+!data/processed/markdown/Resume-markdown-docling/.gitkeep
 
 # IDE
 .vscode/
