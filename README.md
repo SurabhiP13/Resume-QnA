@@ -12,7 +12,30 @@ It processes PDF resumes, chunks and embeds them, and enables semantic search an
     Combines results with Reciprocal Rank Fusion (RRF)
     Reranks using Cross Encoder
     Summarizes top candidates
-
+## Structure
+```
+rag-resume-screening/
+├── data/
+│ ├── raw/ # Place your PDF resumes here
+│ ├── processed/ # Output folders for markdown, chunks, embeddings
+│ ├── chunker.py # Chunks markdown resumes
+│ ├── loader.py # Converts PDFs to markdown
+│ ├── embed.py # Embedding generator
+│ └── init.py
+├── scripts/
+│ ├── generate_embeddings.py # Runs the full pipeline
+│ └── run_retrieval.py # Runs a search query
+├── src/
+│ ├── pipeline.py # Main pipeline logic
+│ ├── config.py # Configuration and paths
+│ ├── generation/ # Summarization code
+│ ├── retrieval/ # BM25, dense, fusion, reranker
+│ └── init.py
+├── tests/ # Unit tests
+├── notebooks/ # Prototyping and experiments
+├── requirements.txt
+└── README.md
+```
 
 ## Quickstart
 
