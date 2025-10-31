@@ -16,23 +16,23 @@ It processes PDF resumes, chunks and embeds them, and enables semantic search an
 ```
 rag-resume-screening/
 ├── data/
-│ ├── raw/ # Place your PDF resumes here
-│ ├── processed/ # Output folders for markdown, chunks, embeddings
-│ ├── chunker.py # Chunks markdown resumes
-│ ├── loader.py # Converts PDFs to markdown
-│ ├── embed.py # Embedding generator
+│ ├── raw/ 
+│ ├── processed/ 
+│ ├── chunker.py 
+│ ├── loader.py 
+│ ├── embed.py 
 │ └── init.py
 ├── scripts/
-│ ├── generate_embeddings.py # Runs the full pipeline
-│ └── run_retrieval.py # Runs a search query
+│ ├── generate_embeddings.py 
+│ └── run_retrieval.py 
 ├── src/
-│ ├── pipeline.py # Main pipeline logic
-│ ├── config.py # Configuration and paths
-│ ├── generation/ # Summarization code
-│ ├── retrieval/ # BM25, dense, fusion, reranker
+│ ├── pipeline.py 
+│ ├── config.py 
+│ ├── generation/ 
+│ ├── retrieval/ 
 │ └── init.py
-├── tests/ # Unit tests
-├── notebooks/ # Prototyping and experiments
+├── tests/ 
+├── notebooks/
 ├── requirements.txt
 └── README.md
 ```
