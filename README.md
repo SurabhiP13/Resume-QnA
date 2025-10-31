@@ -41,8 +41,9 @@ It processes PDF resumes, chunks and embeds them, and enables semantic search an
 ## Testing
 
 Run unit tests with:
+```
 pytest tests/
-
+```
 ## Customization
 
 - Edit `data/chunker.py` to change chunking logic.
