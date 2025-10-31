@@ -41,3 +41,15 @@ It processes PDF resumes, chunks and embeds them, and enables semantic search an
 ## Testing
 
 Run unit tests with:
+pytest tests/
+
+## Customization
+
+- Edit `data/chunker.py` to change chunking logic.
+- Edit `data/loader.py` to change PDF-to-markdown conversion.
+- Edit `data/embed.py` for embedding model changes.
+- Edit `src/pipeline.py` for retrieval and ranking logic.
+
+## License
+
+MIT
