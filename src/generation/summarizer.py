@@ -1,36 +1,19 @@
 from typing import List, Dict, Any
 from openai import OpenAI
-from langchain_core.documents import Document
+
+from ..retrieval.chunk_index import ChunkIndex
 from .utils import split_resume_into_sections, smart_truncate_resume
 
 class ResumeSummarizer:
     def __init__(self, api_key: str, model: str = "gpt-3.5-turbo"):
         self.client = OpenAI(api_key=api_key)
         self.model = model
-    
-    def gather_full_resumes(
-        self,
-        fused_results: List[Dict[str, Any]],
-        all_chunks: List[Document]
-    ) -> Dict[str, str]:
-        """Collect all chunks for each resume_id"""
-        resume_ids = {r["resume_id"] for r in fused_results if r.get("resume_id")}
-        
-        resume_content = {}
-        for rid in resume_ids:
-            chunks = [
-                c.page_content for c in all_chunks
-                if c.metadata.get("resume_id") == rid
-            ]
-            resume_content[rid] = "\n\n".join(chunks)
-        
-        return resume_content
-    
+
     def summarize(
         self,
         query: str,
         fused_results: List[Dict[str, Any]],
-        all_chunks: List[Document],
+        chunk_index: ChunkIndex,
         top_n: int = 5,
         max_resume_chars: int = 6000,
         max_context_chars: int = 2000
@@ -38,34 +21,28 @@ class ResumeSummarizer:
         """Generate summaries for top N resumes"""
         top_resume_ids = []
         resume_matched_chunks = {}
-        
+
         for r in fused_results:
             rid = r.get("resume_id")
             if rid:
                 if rid not in resume_matched_chunks:
                     resume_matched_chunks[rid] = []
                 resume_matched_chunks[rid].append(r)
-                
+
                 if rid not in top_resume_ids:
                     top_resume_ids.append(rid)
-                
+
                 if len(top_resume_ids) >= top_n:
                     break
-        
-        resume_content = self.gather_full_resumes(fused_results, all_chunks)
-        
+
         summaries = []
         for rid in top_resume_ids:
-            full_resume = resume_content.get(rid, "")
+            full_resume = chunk_index.resume_text(rid)
             matched_chunks = resume_matched_chunks.get(rid, [])
-            
+
             matched_texts = []
             for m in matched_chunks[:3]:
-                chunk = next((
-                    c for c in all_chunks
-                    if c.metadata.get("resume_id") == rid
-                    and c.metadata.get("chunk_id") == m.get("chunk_id")
-                ), None)
+                chunk = chunk_index.get(rid, m.get("chunk_id"))
                 if chunk:
                     matched_texts.append(chunk.page_content)
             
@@ -104,11 +81,12 @@ If """
                 max_tokens=400
             )
             
+            top_hit = matched_chunks[0] if matched_chunks else {}
             summaries.append({
                 "resume_id": rid,
                 "summary": response.choices[0].message.content,
-                "rrf_score": next((r["rrf_score"] for r in fused_results if r.get("resume_id") == rid), None),
-                "ce_score": next((r.get("ce_score") for r in fused_results if r.get("resume_id") == rid), None),
+                "rrf_score": top_hit.get("rrf_score"),
+                "ce_score": top_hit.get("ce_score"),
                 "matched_sections": len(matched_chunks)
             })
         

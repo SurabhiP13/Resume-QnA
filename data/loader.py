@@ -1,13 +1,21 @@
 from pathlib import Path
 from tqdm import tqdm
-from docling.document_converter import DocumentConverter
+from docling.datamodel.base_models import InputFormat
+from docling.datamodel.pipeline_options import PdfPipelineOptions
+from docling.document_converter import DocumentConverter, PdfFormatOption
 
 def convert_pdfs_to_markdown(pdf_dir: Path, output_dir: Path, max_resumes: int = 200) -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     pdf_files = list(pdf_dir.glob("*.pdf"))[:max_resumes]
     if not pdf_files:
         raise ValueError(f"No PDF files found in {pdf_dir}")
-    converter = DocumentConverter()
+    # Resumes are digital text PDFs, not scans; OCR is unneeded and the
+    # installed RapidOCR/torch build is incompatible with this docling version.
+    pipeline_options = PdfPipelineOptions()
+    pipeline_options.do_ocr = False
+    converter = DocumentConverter(
+        format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=pipeline_options)}
+    )
     ok, failed = 0, []
     for pdf in tqdm(pdf_files, desc="PDF → Markdown"):
         try:
