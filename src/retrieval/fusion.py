@@ -23,6 +23,7 @@ def rrf_fuse(
     def add_source(hits: Optional[List], label: str):
         if not hits:
             return
+        weight = weights.get(label, 1.0)
         for h in hits:
             key = make_key(h)
             rec = pool.setdefault(key, {
@@ -35,15 +36,15 @@ def rrf_fuse(
             })
             r = h.get("rank")
             if isinstance(r, int) and r >= 1:
-                rec["rrf_score"] += weights[label] * (1.0 / (k + r))
-            
+                rec["rrf_score"] += weight * (1.0 / (k + r))
+
             rank_key = f"{label}_rank"
             score_key = f"{label}_score"
             if rec[rank_key] is None:
                 rec[rank_key] = r
             if rec[score_key] is None:
-                val = h.get(score_key) or h.get("bm25_score") or h.get("dense_score")
-                rec[score_key] = float(val) if val else None
+                val = h.get(score_key)
+                rec[score_key] = float(val) if val is not None else None
     
     add_source(bm25_hits, "bm25")
     add_source(dense_hits, "dense")

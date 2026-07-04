@@ -1,4 +1,4 @@
-﻿python-dotenv
+python-dotenv
 rank-bm25
 faiss-cpu
 sentence-transformers

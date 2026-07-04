@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -38,6 +38,7 @@ env/
 
 # Data files (large files)
 data/raw/**/*.pdf
+data/raw/**/*.docx
 data/processed/chunks/*.pkl
 data/processed/embeddings/*.pkl
 *.pkl
@@ -50,6 +51,9 @@ data/processed/markdown/Resume-markdown-docling/**/*
 !data/processed/chunks/.gitkeep
 !data/processed/embeddings/.gitkeep
 !data/processed/markdown/Resume-markdown-docling/.gitkeep
+
+# Eval data derived from candidate resumes (names, resume snippets)
+eval/
 
 # IDE
 .vscode/

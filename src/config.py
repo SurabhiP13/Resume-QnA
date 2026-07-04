@@ -1,4 +1,4 @@
-﻿import os
+import os
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -18,6 +18,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 PROCESSED_DIR = DATA_DIR / "processed"
 CHUNKS_PATH = PROCESSED_DIR / "chunks" / "resume_chunks_openai.pkl"
 EMBEDDINGS_PATH = PROCESSED_DIR / "embeddings" / "resume_embeddings_openai.pkl"
+BM25_CACHE_PATH = PROCESSED_DIR / "chunks" / "bm25_index.pkl"
 MARKDOWN_DIR = PROCESSED_DIR / "markdown" / "Resume-markdown-docling"
 # Retrieval Configuration
 BM25_TOP_K = 200
